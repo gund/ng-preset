@@ -1,0 +1,6 @@
+{
+  "$schema": "http://json.schemastore.org/prettierrc",
+  "parser": "typescript",
+  "singleQuote": true,
+  "trailingComma": "all"
+}

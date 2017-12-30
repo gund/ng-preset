@@ -2,7 +2,11 @@ import { ANALYZE_FOR_ENTRY_COMPONENTS, ModuleWithProviders, Type } from '@angula
 
 import { PRESET_TYPES_TOKEN, PresetType } from './preset-token';
 
-export function createWithPresetMethodFor<T = any>(moduleClass: Type<any>) {
+export type WithPresetMethod<T = any> = (presetType: PresetType<T>) => ModuleWithProviders;
+
+export function createWithPresetMethodFor<T = any>(
+  moduleClass: Type<any>
+): WithPresetMethod<T> {
   return (presetType: PresetType<T>): ModuleWithProviders => {
     return {
       ngModule: moduleClass,

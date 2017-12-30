@@ -1,14 +1,12 @@
 {
   "name": "ng-preset",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "license": "MIT",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build",
     "lint": "ng lint",
-    "e2e": "ng e2e",
-    "packagr": "ng-packagr -p ng-package.json",
+    "build": "ng-packagr -p ng-package.json",
     "test": "jest",
     "test:watch": "jest --watch",
     "test:ci": "jest --runInBand"

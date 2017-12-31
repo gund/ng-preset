@@ -5,7 +5,10 @@ import { PRESET_TYPES_TOKEN, PresetType } from './preset-token';
 @Injectable()
 export class PresetService implements OnDestroy {
 
-  private presetTypes = this.injector.get(PRESET_TYPES_TOKEN);
+  private get presetTypes() {
+    return this.injector.get(PRESET_TYPES_TOKEN);
+  }
+
   private presetCompRefs: ComponentRef<any>[] = [];
   private finalPresetComp: any;
 
@@ -41,8 +44,11 @@ export class PresetService implements OnDestroy {
   }
 
   private mergeCompRefs<T>(compRefs: ComponentRef<T>[]): T {
+    const proto = compRefs.reduce((comp, compRef) =>
+      Object.assign(comp, compRef.instance.constructor.prototype), {});
+
     return compRefs.reduce((comp, compRef) =>
-      Object.assign(comp, compRef.instance), {} as T);
+      Object.assign(comp, compRef.instance), proto as T);
   }
 
 }

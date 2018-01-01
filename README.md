@@ -257,3 +257,7 @@ Run `npm run build` and `dist` filder will be generated.
 ## Running unit tests
 
 Run `npm test` to execute the unit tests via `Jest`.
+
+## Licence
+
+MIT © [Alex Malkevich](malkevich.alex@gmail.com)

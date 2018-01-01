@@ -19,6 +19,7 @@ after_success:
   - cd dist
   - npm install -g travis-deploy-once@4
   - travis-deploy-once "npm run semantic-release"
+  - test:report
 branches:
   except:
     - /^v\d+\.\d+\.\d+$/

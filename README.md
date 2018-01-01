@@ -2,6 +2,14 @@
 
 > Preset library to help make your Angular components customizable
 
+<!-- [![Travis CI](https://img.shields.io/travis/gund/ng-preset/master.svg?maxAge=2592000)](https://travis-ci.org/gund/ng-preset) -->
+<!-- [![Coverage](https://img.shields.io/codecov/c/github/gund/ng-preset.svg?maxAge=2592000)](https://codecov.io/gh/gund/ng-preset) -->
+<!-- [![Code Climate](https://img.shields.io/codeclimate/github/gund/ng-preset.svg?maxAge=2592000)](https://codeclimate.com/github/gund/ng-preset) -->
+[![Npm](https://img.shields.io/npm/v/ng-preset.svg?maxAge=2592000)](https://badge.fury.io/js/ng-preset)
+[![Npm Downloads](https://img.shields.io/npm/dt/ng2-http-interceptor.svg?maxAge=2592000)](https://www.npmjs.com/package/ng-preset)
+[![Licence](https://img.shields.io/npm/l/ng-preset.svg?maxAge=2592000)](https://github.com/gund/ng-preset/blob/master/LICENSE)
+[![semantic-release](https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg)](https://github.com/semantic-release/semantic-release)
+
 Ever wanted to build your component highly customizable but wondered how?
 
 Seek no more with the `Preset` approach!

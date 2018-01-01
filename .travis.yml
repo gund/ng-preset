@@ -1,0 +1,24 @@
+language: node_js
+cache:
+  directories:
+    - ~/.npm
+    - node_modules
+notifications:
+  email: false
+node_js:
+  - '9'
+  - '8'
+  - '6'
+install:
+  - npm install
+script:
+  - npm run test:ci
+  - npm run build
+after_success:
+  - cp -R .git dist/
+  - cd dist
+  - npm install -g travis-deploy-once@4
+  - travis-deploy-once "npm run semantic-release"
+branches:
+  except:
+    - /^v\d+\.\d+\.\d+$/

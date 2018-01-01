@@ -1,6 +1,6 @@
 {
   "name": "ng-preset",
-  "version": "0.0.1",
+  "version": "0.0.0-development",
   "license": "MIT",
   "scripts": {
     "ng": "ng",
@@ -9,7 +9,12 @@
     "build": "ng-packagr -p ng-package.json",
     "test": "jest",
     "test:watch": "jest --watch",
-    "test:ci": "jest --runInBand --coverage"
+    "test:ci": "jest --runInBand --coverage",
+    "semantic-release": "semantic-release"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/gund/ng-preset"
   },
   "private": false,
   "peerDependencies": {
@@ -52,7 +57,8 @@
     "tslib": "^1.8.1",
     "tslint": "~5.7.0",
     "typescript": "~2.4.2",
-    "zone.js": "^0.8.14"
+    "zone.js": "^0.8.14",
+    "semantic-release": "^11.0.2"
   },
   "jest": {
     "preset": "jest-preset-angular",

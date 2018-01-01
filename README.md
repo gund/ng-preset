@@ -2,8 +2,8 @@
 
 > Preset library to help make your Angular components customizable
 
-<!-- [![Travis CI](https://img.shields.io/travis/gund/ng-preset/master.svg?maxAge=2592000)](https://travis-ci.org/gund/ng-preset) -->
-<!-- [![Coverage](https://img.shields.io/codecov/c/github/gund/ng-preset.svg?maxAge=2592000)](https://codecov.io/gh/gund/ng-preset) -->
+[![Travis CI](https://img.shields.io/travis/gund/ng-preset/master.svg?maxAge=2592000)](https://travis-ci.org/gund/ng-preset)
+[![Coverage](https://img.shields.io/codecov/c/github/gund/ng-preset.svg?maxAge=2592000)](https://codecov.io/gh/gund/ng-preset)
 <!-- [![Code Climate](https://img.shields.io/codeclimate/github/gund/ng-preset.svg?maxAge=2592000)](https://codeclimate.com/github/gund/ng-preset) -->
 [![Npm](https://img.shields.io/npm/v/ng-preset.svg?maxAge=2592000)](https://badge.fury.io/js/ng-preset)
 [![Npm Downloads](https://img.shields.io/npm/dt/ng2-http-interceptor.svg?maxAge=2592000)](https://www.npmjs.com/package/ng-preset)

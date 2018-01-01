@@ -5,6 +5,7 @@
   "scripts": {
     "precommit": "lint-staged",
     "commit": "git-cz",
+    "prepush": "npm run test --coverage",
     "ng": "ng",
     "start": "ng serve",
     "lint": "ng lint",

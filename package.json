@@ -99,7 +99,7 @@
   "release": {
     "publish": [
       {
-        "path": "@semantic-release/github",
+        "path": "@semantic-release/npm",
         "pkgRoot": "dist",
         "tarballDir": "dist-tar"
       },

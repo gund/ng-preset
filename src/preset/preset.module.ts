@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { NgModule } from '@angular/core';
+import { ModuleWithProviders, NgModule, Type } from '@angular/core';
 
 import { PresetService } from './preset.service';
 
@@ -9,4 +9,19 @@ import { PresetService } from './preset.service';
   declarations: [],
   providers: [PresetService],
 })
-export class PresetModule { }
+export class PresetModule {
+
+  static forComponent(component: Type<any>): ModuleWithProviders {
+    return PresetModule.forComponents([component]);
+  }
+
+  static forComponents(components: Type<any>[]): ModuleWithProviders {
+    return {
+      ngModule: PresetModule,
+      providers: [
+        { provide: 'COMPS', useValue: components, multi: true },
+      ],
+    };
+  }
+
+}

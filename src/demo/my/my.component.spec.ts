@@ -15,7 +15,7 @@ describe('MyComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [PresetDefaultModule.withPreset(MockPresetComponent)],
+      imports: [PresetDefaultModule.forComponent(MyComponent, MockPresetComponent)],
       declarations: [MyComponent, MockPresetComponent],
     })
       .compileComponents();

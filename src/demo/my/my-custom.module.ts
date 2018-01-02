@@ -1,16 +1,20 @@
-import { NgModule } from '@angular/core';
+import { ModuleWithProviders, NgModule, Type } from '@angular/core';
 
-import { createWithPresetMethodFor, PresetModule } from '../../preset';
+import { PresetModule } from '../../preset';
+import { providePresetFor } from '../../preset/preset-method';
 import { MyComponentModule } from './my-component.module';
 import { MyPreset } from './my-preset';
+import { MyComponent } from './my.component';
 
 @NgModule({
   imports: [
-    PresetModule,
     MyComponentModule,
+    PresetModule.forComponent(MyComponent),
   ],
   exports: [MyComponentModule],
 })
 export class MyCustomModule {
-  static withPreset = createWithPresetMethodFor<MyPreset>(MyCustomModule);
+  static withPreset(presetType: Type<MyPreset>): ModuleWithProviders {
+    return providePresetFor(MyCustomModule, presetType);
+  }
 }

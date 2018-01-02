@@ -101,16 +101,11 @@
       {
         "path": "@semantic-release/github",
         "pkgRoot": "dist",
-        "tarballDir": "dist-tar/tarball.tgz"
+        "tarballDir": "dist-tar"
       },
       {
         "path": "@semantic-release/github",
-        "assets": [
-          {
-            "path": "dist-tar/tarball.tgz",
-            "label": "Package Tarball"
-          }
-        ]
+        "assets": "dist-tar/*.tgz"
       }
     ]
   }

@@ -95,5 +95,23 @@
       "tslint --fix",
       "git add"
     ]
+  },
+  "release": {
+    "publish": [
+      {
+        "path": "@semantic-release/github",
+        "pkgRoot": "dist",
+        "tarballDir": "dist-tar/tarball.tgz"
+      },
+      {
+        "path": "@semantic-release/github",
+        "assets": [
+          {
+            "path": "dist-tar/tarball.tgz",
+            "label": "Package Tarball"
+          }
+        ]
+      }
+    ]
   }
 }

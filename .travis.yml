@@ -16,8 +16,6 @@ script:
   - npm run build
 after_success:
   - npm run test:report
-  - cp -R .git dist/
-  - cd dist
   - npm install -g travis-deploy-once@4
   - travis-deploy-once "npm run semantic-release"
 branches:

@@ -164,6 +164,7 @@ already setup and ready to roll:
 // my.module.ts
 import { PresetDefaultModule } from 'ng-preset';
 
+import { MyComponent } from './my.component';
 import { MyComponentModule } from './my-component.module';
 import { MyPresetDefaultComponent } from './my-preset-default.component';
 
@@ -171,7 +172,7 @@ import { MyPresetDefaultComponent } from './my-preset-default.component';
   ...
   imports: [
     MyComponentModule,
-    PresetDefaultModule.withPreset(MyPresetDefaultComponent),
+    PresetDefaultModule.forComponent(MyComponent, MyPresetDefaultComponent),
   ],
   exports: [MyComponentModule],
   declarations: [MyPresetDefaultComponent],
@@ -189,21 +190,24 @@ Create another module that will allow user to pass it's own preset component.
 
 ```ts
 // my-custom.module.ts
-import { PresetDefaultModule } from 'ng-preset';
+import { PresetModule, providePresetFor } from 'ng-preset';
 
 import { MyPreset } from './my-preset';
+import { MyComponent } from './my.component';
 import { MyComponentModule } from './my-component.module';
 
 @NgModule({
   ...
   imports: [
     MyComponentModule,
-    PresetModule,
+    PresetModule.forComponent(MyComponent),
   ],
   exports: [MyComponentModule],
 })
 export class MyCustomModule {
-  static withPreset = createWithPresetMethodFor<MyPreset>(MyCustomModule);
+  static withPreset(presetType: Type<MyPreset>): ModuleWithProviders {
+    return providePresetFor(MyCustomModule, presetType);
+  }
 }
 ```
 

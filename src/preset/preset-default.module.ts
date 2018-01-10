@@ -1,7 +1,8 @@
+import { PRESET_COMPS_TOKEN } from './preset-token';
 import { CommonModule } from '@angular/common';
 import { ModuleWithProviders, NgModule, Type } from '@angular/core';
 
-import { providePresetFor } from './preset-method';
+import { providePresetFor } from './provide/preset-for';
 import { PresetService } from './preset.service';
 
 @NgModule({
@@ -11,15 +12,23 @@ import { PresetService } from './preset.service';
   providers: [PresetService],
 })
 export class PresetDefaultModule {
-
-  static forComponent(component: Type<any>, presetType: Type<any>): ModuleWithProviders {
+  static forComponent(
+    component: Type<any>,
+    presetType: Type<any>,
+  ): ModuleWithProviders {
     return PresetDefaultModule.forComponents([component], presetType);
   }
 
-  static forComponents(components: Type<any>[], presetType: Type<any>): ModuleWithProviders {
+  static forComponents(
+    components: Type<any>[],
+    presetType: Type<any>,
+  ): ModuleWithProviders {
     return providePresetFor(PresetDefaultModule, presetType, [
-      { provide: 'COMPS', useValue: components, multi: true },
+      { provide: PRESET_COMPS_TOKEN, useValue: components, multi: true },
     ]);
   }
 
+  constructor(presetService: PresetService) {
+    presetService.initDecoratedPresets();
+  }
 }

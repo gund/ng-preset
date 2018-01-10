@@ -7,10 +7,7 @@ import { MyCustomModule } from './my/my-custom.module';
 import { MyModule } from './my/my.module';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    MyPresetOneComponent,
-  ],
+  declarations: [AppComponent, MyPresetOneComponent],
   imports: [
     BrowserModule,
     MyModule, // This is normal use-case
@@ -18,6 +15,6 @@ import { MyModule } from './my/my.module';
     // to override default preset
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

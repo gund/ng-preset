@@ -5,9 +5,9 @@ import { MyPreset } from '../my/my-preset';
 @Component({
   selector: 'prst-my-preset-one',
   templateUrl: './my-preset-one.component.html',
-  styleUrls: ['./my-preset-one.component.css']
+  styleUrls: ['./my-preset-one.component.css'],
 })
-export class MyPresetOneComponent implements MyPreset {
+export class MyPresetOneComponent extends MyPreset {
   @ViewChild('headerTpl') headerTpl: TemplateRef<any>;
   @ViewChild('contentTpl') contentTpl: TemplateRef<any>;
   @ViewChild('footerTpl') footerTpl: TemplateRef<any>;

@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { ModuleWithProviders, NgModule, Type } from '@angular/core';
 
+import { PRESET_COMPS_TOKEN } from './preset-token';
 import { PresetService } from './preset.service';
 
 @NgModule({
@@ -10,7 +11,6 @@ import { PresetService } from './preset.service';
   providers: [PresetService],
 })
 export class PresetModule {
-
   static forComponent(component: Type<any>): ModuleWithProviders {
     return PresetModule.forComponents([component]);
   }
@@ -19,9 +19,12 @@ export class PresetModule {
     return {
       ngModule: PresetModule,
       providers: [
-        { provide: 'COMPS', useValue: components, multi: true },
+        { provide: PRESET_COMPS_TOKEN, useValue: components, multi: true },
       ],
     };
   }
 
+  constructor(presetService: PresetService) {
+    presetService.initDecoratedPresets();
+  }
 }

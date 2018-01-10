@@ -1,6 +1,8 @@
 import { InjectionToken, Type } from '@angular/core';
 
-export abstract class PresetType {}
+export abstract class PresetType {
+  private __isPreset__ = true;
+}
 
 export const PRESET_TYPES_TOKEN = new InjectionToken<PresetType[]>(
   'PresetTypes',

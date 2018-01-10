@@ -5,7 +5,7 @@ import { providePreset } from './preset';
 
 export function providePresetFor(
   moduleClass: Type<any>,
-  presetType: PresetType,
+  presetType: Type<PresetType>,
   additionalProviders: Provider[] = [],
 ): ModuleWithProviders {
   return {

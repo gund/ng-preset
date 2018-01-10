@@ -1,13 +1,21 @@
-import { ChangeDetectorRef, Component, NgModule, OnDestroy, Provider } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  NgModule,
+  OnDestroy,
+  Provider,
+} from '@angular/core';
 import { async, TestBed } from '@angular/core/testing';
 
-import { PRESET_TYPES_TOKEN } from './preset-token';
+import { PRESET_TYPES_TOKEN, PresetType } from './preset-token';
 import { PresetService } from './preset.service';
 
 @Component({ selector: 'prst-mock-preset', template: '' })
-class MockPresetComponent {
+class MockPresetComponent extends PresetType {
   mockPreset = true;
-  constructor(private cdr: ChangeDetectorRef) { }
+  constructor(private cdr: ChangeDetectorRef) {
+    super();
+  }
   isDestroyed() {
     try {
       // Will throw once the view was destroyed
@@ -20,13 +28,18 @@ class MockPresetComponent {
 }
 
 @Component({ selector: 'prst-mock-preset2', template: '' })
-class MockPreset2Component {
+class MockPreset2Component extends PresetType {
   mockPreset2 = true;
 }
 
 @Component({ selector: 'prst-mock-preset3', template: '' })
-class MockPreset3Component {
+class MockPreset3Component extends PresetType {
   mockPreset3 = true;
+}
+
+@Component({ selector: 'prst-mock-preset-invalid', template: '' })
+class MockPresetInvalidComponent {
+  mockPresetInvalid = true;
 }
 
 @NgModule({
@@ -34,28 +47,29 @@ class MockPreset3Component {
     MockPresetComponent,
     MockPreset2Component,
     MockPreset3Component,
+    MockPresetInvalidComponent,
   ],
   entryComponents: [
     MockPresetComponent,
     MockPreset2Component,
     MockPreset3Component,
+    MockPresetInvalidComponent,
   ],
 })
-class MockPresetModule { }
+class MockPresetModule {}
 
 describe('Service: Preset', () => {
   let service: PresetService;
   let extraProviders: Provider[] = [];
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      imports: [MockPresetModule],
-      providers: [
-        PresetService,
-        ...extraProviders,
-      ]
-    }).compileComponents();
-  }));
+  beforeEach(
+    async(() => {
+      TestBed.configureTestingModule({
+        imports: [MockPresetModule],
+        providers: [PresetService, ...extraProviders],
+      }).compileComponents();
+    }),
+  );
 
   beforeEach(() => {
     service = TestBed.get(PresetService);
@@ -73,11 +87,18 @@ describe('Service: Preset', () => {
     });
 
     describe('with `PRESET_TYPES_TOKEN`', () => {
-      beforeAll(() => extraProviders = [
-        { provide: PRESET_TYPES_TOKEN, useValue: MockPresetComponent, multi: true },
-      ]);
+      beforeAll(
+        () =>
+          (extraProviders = [
+            {
+              provide: PRESET_TYPES_TOKEN,
+              useValue: MockPresetComponent,
+              multi: true,
+            },
+          ]),
+      );
 
-      afterAll(() => extraProviders = []);
+      afterAll(() => (extraProviders = []));
 
       it('should return instantiated component from `PRESET_TYPES_TOKEN`', () => {
         const comp = service.getPreset<MockPresetComponent>();
@@ -100,16 +121,33 @@ describe('Service: Preset', () => {
     });
 
     describe('with multiple `PRESET_TYPES_TOKEN`', () => {
-      beforeAll(() => extraProviders = [
-        { provide: PRESET_TYPES_TOKEN, useValue: MockPresetComponent, multi: true },
-        { provide: PRESET_TYPES_TOKEN, useValue: MockPreset2Component, multi: true },
-        { provide: PRESET_TYPES_TOKEN, useValue: MockPreset3Component, multi: true },
-      ]);
+      beforeAll(
+        () =>
+          (extraProviders = [
+            {
+              provide: PRESET_TYPES_TOKEN,
+              useValue: MockPresetComponent,
+              multi: true,
+            },
+            {
+              provide: PRESET_TYPES_TOKEN,
+              useValue: MockPreset2Component,
+              multi: true,
+            },
+            {
+              provide: PRESET_TYPES_TOKEN,
+              useValue: MockPreset3Component,
+              multi: true,
+            },
+          ]),
+      );
 
-      afterAll(() => extraProviders = []);
+      afterAll(() => (extraProviders = []));
 
       it('should return instantiated merged component from `PRESET_TYPES_TOKEN`', () => {
-        type AllPresets = MockPresetComponent & MockPreset2Component & MockPreset3Component;
+        type AllPresets = MockPresetComponent &
+          MockPreset2Component &
+          MockPreset3Component;
         const comp = service.getPreset<AllPresets>();
         expect(comp.mockPreset).toBeTruthy();
         expect(comp.isDestroyed).toBeDefined();
@@ -117,6 +155,32 @@ describe('Service: Preset', () => {
         expect(comp.mockPreset3).toBeTruthy();
       });
     });
-  });
 
+    describe('with invalid `PRESET_TYPES_TOKEN` token', () => {
+      beforeAll(
+        () =>
+          (extraProviders = [
+            {
+              provide: PRESET_TYPES_TOKEN,
+              useValue: MockPresetComponent,
+              multi: true,
+            },
+            {
+              provide: PRESET_TYPES_TOKEN,
+              useValue: MockPresetInvalidComponent,
+              multi: true,
+            },
+          ]),
+      );
+
+      afterAll(() => (extraProviders = []));
+
+      it('should only return valid instantiates comp', () => {
+        type AllPresets = MockPresetComponent & MockPresetInvalidComponent;
+        const comp = service.getPreset<AllPresets>();
+        expect(comp.mockPreset).toBeTruthy();
+        expect(comp.mockPresetInvalid).toBeUndefined();
+      });
+    });
+  });
 });

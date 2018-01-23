@@ -24,11 +24,3 @@ export function setPresetMetadataOn(
 export function getPresetMetadataFrom(type: any): PresetMetadata[] {
   return type[PRESET_METADATA_KEY] || [];
 }
-
-export function Preset(options?: PresetMetadataOptions): PropertyDecorator {
-  return (target, propName) =>
-    setPresetMetadataOn(target, {
-      propName,
-      options,
-    });
-}

@@ -2,12 +2,16 @@ import {
   ChangeDetectorRef,
   Component,
   NgModule,
-  OnDestroy,
   Provider,
 } from '@angular/core';
 import { async, TestBed } from '@angular/core/testing';
 
-import { PRESET_TYPES_TOKEN, PresetType } from './preset-token';
+import { Preset } from './metadata';
+import {
+  PRESET_TYPES_TOKEN,
+  PRESET_COMPS_TOKEN,
+  PresetType,
+} from './preset-token';
 import { PresetService } from './preset.service';
 
 @Component({ selector: 'prst-mock-preset', template: '' })
@@ -181,6 +185,63 @@ describe('Service: Preset', () => {
         expect(comp.mockPreset).toBeTruthy();
         expect(comp.mockPresetInvalid).toBeUndefined();
       });
+    });
+  });
+
+  describe('initDecoratedPresets() method', () => {
+    class T1 {
+      @Preset() preset: MockPresetComponent;
+    }
+    class T2 {
+      @Preset() preset: MockPresetComponent;
+    }
+    class T3 {
+      preset: MockPresetComponent;
+    }
+
+    beforeAll(
+      () =>
+        (extraProviders = [
+          {
+            provide: PRESET_COMPS_TOKEN,
+            useValue: [T1, T2, T3],
+            multi: true,
+          },
+          {
+            provide: PRESET_TYPES_TOKEN,
+            useValue: MockPresetComponent,
+            multi: true,
+          },
+        ]),
+    );
+    afterAll(() => (extraProviders = []));
+
+    beforeEach(() => service.initDecoratedPresets());
+
+    it('should resolve decorated presets for components from `PRESET_COMPS_TOKEN`', () => {
+      const t1 = new T1();
+      const t2 = new T2();
+
+      expect(t1.preset).toBeTruthy();
+      expect(t1.preset.mockPreset).toBeTruthy();
+      expect(t2.preset).toBeTruthy();
+      expect(t2.preset.mockPreset).toBeTruthy();
+    });
+
+    it('should skip components without metadata', () => {
+      const t3 = new T3();
+
+      expect(t3.preset).toBeUndefined();
+    });
+
+    it('should allow to redefine resolved decorated value', () => {
+      const t1 = new T1();
+      const t3 = new T3();
+
+      t1.preset = null as any;
+      t3.preset = 'other value' as any;
+      expect(t1.preset).toBe(null);
+      expect(t3.preset).toBe('other value');
     });
   });
 });

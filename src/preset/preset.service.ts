@@ -13,7 +13,7 @@ import {
   PRESET_TYPES_TOKEN,
   PresetType,
 } from './preset-token';
-import { hasTypeAsProto } from './utils';
+import { EMPTY_VAL, hasTypeAsProto, isEmptyVal } from './utils';
 
 interface TypeWithPresetMetadata<T = any> {
   type: Type<T>;
@@ -114,8 +114,8 @@ export class PresetService implements OnDestroy {
   }
 
   private initPresetOn(type: Type<any>, metadata: PresetMetadata) {
-    let value: any;
-    const get = () => (value = this.getPreset());
+    let value: any = EMPTY_VAL;
+    const get = () => (isEmptyVal(value) ? (value = this.getPreset()) : value);
     const set = (val: any) => (value = val);
 
     if (delete type.prototype[metadata.propName]) {

@@ -11,4 +11,6 @@ engines:
 ratings:
   paths:
   - "src/**/*.ts"
-exclude_paths: []
+exclude_paths: [
+  "src/**/*.spec.ts"
+]

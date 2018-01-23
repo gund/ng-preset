@@ -16,11 +16,11 @@ export function setPresetMetadataOn(
     metadata = [metadata];
   }
 
-  const ctor = type.constructor;
-  const existingMetadata = ctor[PRESET_METADATA_KEY] || [];
-  ctor[PRESET_METADATA_KEY] = [...existingMetadata, ...metadata];
+  const existingMetadata = type[PRESET_METADATA_KEY] || [];
+  type[PRESET_METADATA_KEY] = [...existingMetadata, ...metadata];
 }
 
 export function getPresetMetadataFrom(type: any): PresetMetadata[] {
-  return type[PRESET_METADATA_KEY] || [];
+  const proto = type.prototype || (type.prototype = {});
+  return proto[PRESET_METADATA_KEY] || [];
 }

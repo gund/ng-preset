@@ -1,8 +1,9 @@
 import { CommonModule } from '@angular/common';
-import { NgModule } from '@angular/core';
+import { ModuleWithProviders, NgModule, Type } from '@angular/core';
 
-import { createWithPresetMethodFor, WithPresetMethod } from './preset-method';
+import { PresetType } from './preset-token';
 import { PresetService } from './preset.service';
+import { provideComponents, providePresetFor } from './provide';
 
 @NgModule({
   imports: [CommonModule],
@@ -11,5 +12,25 @@ import { PresetService } from './preset.service';
   providers: [PresetService],
 })
 export class PresetDefaultModule {
-  static withPreset: WithPresetMethod = createWithPresetMethodFor(PresetDefaultModule);
+  static forComponent(
+    component: Type<any>,
+    presetType: Type<PresetType>,
+  ): ModuleWithProviders {
+    return PresetDefaultModule.forComponents([component], presetType);
+  }
+
+  static forComponents(
+    components: Type<any>[],
+    presetType: Type<PresetType>,
+  ): ModuleWithProviders {
+    return providePresetFor(
+      PresetDefaultModule,
+      presetType,
+      provideComponents(components),
+    );
+  }
+
+  constructor(presetService: PresetService) {
+    presetService.initDecoratedPresets();
+  }
 }

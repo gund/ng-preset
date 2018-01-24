@@ -48,12 +48,14 @@ $ npm install --save ng-preset
 First decide which parts of your component you want to make extendable
 via presets (suppose it's header, content and footer).
 
-Once decided - create an interface that will represent this
+Once decided - create an abstract class that will represent this
 requirement as a preset:
 
 ```ts
 // my-preset.ts
-export interface MyPreset {
+import { PresetType } from 'ng-preset';
+
+export abstract class MyPreset extends PresetType {
   headerTpl: TemplateRef<any>;
   contentTpl: TemplateRef<any>;
   footerTpl: TemplateRef<any>;
@@ -62,6 +64,7 @@ export interface MyPreset {
 
 _NOTE_: that each property you define should be of type `TemplateRef`,
 because that is what will be stamped inside of your component.
+And it is required to extend your class from `PresetType` for further validations.
 
 You can also optionally provide some context information
 that a template will receive once instantiated as a generic argument
@@ -73,17 +76,14 @@ Now in your component you can get preset component:
 
 ```ts
 // my.component.ts
+import { Preset } from 'ng-preset';
 import { MyPreset } from './my-preset';
 
 @Component({...})
 export class MyComponent {
-  presetComp = this.presetService.getPreset<MyPreset>();
-  constructor(public presetService: PresetService) { }
+  @Preset() presetComp: MyPreset;
 }
 ```
-
-_NOTE_: You can annotate your preset type here by setting generic argument
-while calling `PresetService.getPreset`.
 
 ### Stamp preset templates in your component
 
@@ -124,12 +124,14 @@ import { MyPreset } from '../my-preset';
     <ng-template #footerTpl>Footer default preset</ng-template>
   `
 })
-export class MyPresetDefaultComponent implements MyPreset {
+export class MyPresetDefaultComponent extends MyPreset {
   @ViewChild('headerTpl') headerTpl: TemplateRef<any>;
   @ViewChild('contentTpl') contentTpl: TemplateRef<any>;
   @ViewChild('footerTpl') footerTpl: TemplateRef<any>;
 }
 ```
+
+_NOTE_: Make sure you extend your preset class so that it can ba validated later.
 
 That is all you need to have in your preset component!
 
@@ -164,6 +166,7 @@ already setup and ready to roll:
 // my.module.ts
 import { PresetDefaultModule } from 'ng-preset';
 
+import { MyComponent } from './my.component';
 import { MyComponentModule } from './my-component.module';
 import { MyPresetDefaultComponent } from './my-preset-default.component';
 
@@ -171,7 +174,7 @@ import { MyPresetDefaultComponent } from './my-preset-default.component';
   ...
   imports: [
     MyComponentModule,
-    PresetDefaultModule.withPreset(MyPresetDefaultComponent),
+    PresetDefaultModule.forComponent(MyComponent, MyPresetDefaultComponent),
   ],
   exports: [MyComponentModule],
   declarations: [MyPresetDefaultComponent],
@@ -189,21 +192,24 @@ Create another module that will allow user to pass it's own preset component.
 
 ```ts
 // my-custom.module.ts
-import { PresetDefaultModule } from 'ng-preset';
+import { PresetModule, providePresetFor } from 'ng-preset';
 
 import { MyPreset } from './my-preset';
+import { MyComponent } from './my.component';
 import { MyComponentModule } from './my-component.module';
 
 @NgModule({
   ...
   imports: [
     MyComponentModule,
-    PresetModule,
+    PresetModule.forComponent(MyComponent),
   ],
   exports: [MyComponentModule],
 })
 export class MyCustomModule {
-  static withPreset = createWithPresetMethodFor<MyPreset>(MyCustomModule);
+  static withPreset(presetType: Type<MyPreset>): ModuleWithProviders {
+    return providePresetFor(MyCustomModule, presetType);
+  }
 }
 ```
 

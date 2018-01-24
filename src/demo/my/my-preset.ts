@@ -1,6 +1,8 @@
 import { TemplateRef } from '@angular/core';
 
-export interface MyPreset {
+import { PresetType } from '../../preset';
+
+export abstract class MyPreset extends PresetType {
   headerTpl: TemplateRef<any>;
   contentTpl: TemplateRef<any>;
   footerTpl: TemplateRef<any>;

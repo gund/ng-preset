@@ -1,6 +1,12 @@
 import { InjectionToken, Type } from '@angular/core';
 
-// tslint:disable-next-line:no-empty-interface
-export interface PresetType<T = any> extends Type<T> { }
+export abstract class PresetType {
+  private __isPreset__ = true;
+}
 
-export const PRESET_TYPES_TOKEN = new InjectionToken<PresetType[]>('PresetTypes');
+export const PRESET_TYPES_TOKEN = new InjectionToken<PresetType[]>(
+  'PresetTypes',
+);
+export const PRESET_COMPS_TOKEN = new InjectionToken<Type<any>[][]>(
+  'PresetComps',
+);

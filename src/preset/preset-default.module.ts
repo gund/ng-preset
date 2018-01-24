@@ -1,9 +1,9 @@
 import { CommonModule } from '@angular/common';
 import { ModuleWithProviders, NgModule, Type } from '@angular/core';
 
-import { PRESET_COMPS_TOKEN, PresetType } from './preset-token';
+import { PresetType } from './preset-token';
 import { PresetService } from './preset.service';
-import { providePresetFor } from './provide/preset-for';
+import { provideComponents, providePresetFor } from './provide';
 
 @NgModule({
   imports: [CommonModule],
@@ -23,9 +23,11 @@ export class PresetDefaultModule {
     components: Type<any>[],
     presetType: Type<PresetType>,
   ): ModuleWithProviders {
-    return providePresetFor(PresetDefaultModule, presetType, [
-      { provide: PRESET_COMPS_TOKEN, useValue: components, multi: true },
-    ]);
+    return providePresetFor(
+      PresetDefaultModule,
+      presetType,
+      provideComponents(components),
+    );
   }
 
   constructor(presetService: PresetService) {

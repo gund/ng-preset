@@ -16,9 +16,11 @@ import { PresetService } from './preset.service';
 
 @Component({ selector: 'prst-mock-preset', template: '' })
 class MockPresetComponent extends PresetType {
+  static initCounter = 0;
   mockPreset = true;
   constructor(private cdr: ChangeDetectorRef) {
     super();
+    MockPresetComponent.initCounter++;
   }
   isDestroyed() {
     try {
@@ -78,6 +80,8 @@ describe('Service: Preset', () => {
   beforeEach(() => {
     service = TestBed.get(PresetService);
   });
+
+  afterEach(() => (MockPresetComponent.initCounter = 0));
 
   it('should be created without errors', () => {
     expect(service).toBeTruthy();
@@ -242,6 +246,20 @@ describe('Service: Preset', () => {
       t3.preset = 'other value' as any;
       expect(t1.preset).toBe(null);
       expect(t3.preset).toBe('other value');
+    });
+
+    it('should return if already called before', () => {
+      const presetFirst = T1.prototype.preset;
+
+      expect(MockPresetComponent.initCounter).toBe(1);
+
+      // Call second time should not re-create resolved preset
+      service.initDecoratedPresets();
+
+      const presetSecond = T1.prototype.preset;
+
+      expect(MockPresetComponent.initCounter).toBe(1);
+      expect(presetFirst).toBe(presetSecond);
     });
   });
 });
